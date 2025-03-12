@@ -3,6 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
+  <h1 class="text-2xl uppercase font-bold text-yellow-300">teste</h1>
   <router-view />
 </template>
 
