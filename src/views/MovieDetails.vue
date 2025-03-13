@@ -1,7 +1,10 @@
 <template>
   <div class="movie-detail" v-if="movie">
     <h1>{{ movie.title }}</h1>
-    <img :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`" alt="movie poster" />
+    <img
+      :src="`https://image.tmdb.org/t/p/w500/${movie.poster_path}`"
+      alt="movie poster"
+    />
     <p>{{ movie.overview }}</p>
     <p><strong>Release Date:</strong> {{ movie.release_date }}</p>
     <p><strong>Rating:</strong> {{ movie.vote_average }}</p>
@@ -9,11 +12,11 @@
 </template>
 
 <script>
-import { fetchMovieDetails } from '../services/api.js';
+import { fetchMovieDetails } from "../services/api.js";
 
 export default {
-  props: ['id'],
-  
+  props: ["id"],
+
   data() {
     return {
       movie: null,
