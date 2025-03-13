@@ -80,7 +80,6 @@
     <!-- No movies message -->
     <div v-else>
       <p class="text-center text-lg">No movies found.</p>
-      <!---->
     </div>
   </div>
 </template>
