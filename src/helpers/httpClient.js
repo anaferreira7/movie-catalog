@@ -7,6 +7,10 @@ const httpClient = axios.create({
   },
 });
 
+httpClient.defaults.params = {
+  api_key: process.env.VUE_APP_API_KEY,
+};
+
 httpClient.interceptors.response.use(
   (response) => response,
   (error) => {

@@ -1,18 +1,6 @@
 <template>
   <!-- Filters Section -->
-  <div class="mb-6 flex gap-x-6">
-    <!-- Search by Title -->
-    <div class="mb-4">
-      <label for="search" class="text-lg">Search Title:</label>
-      <input
-        type="text"
-        id="search"
-        v-model="filters.title"
-        @input="updateFilters"
-        class="ml-2 p-2 border bg-gray-700 border-gray-300 rounded"
-        placeholder="Type movie title..."
-      />
-    </div>
+  <div class="mb-6 flex gap-x-8">
     <!-- Genres Filter -->
     <div class="w-fit">
       <label for="genres" class="">Genres:</label>
@@ -87,7 +75,6 @@ export default {
   data() {
     return {
       filters: {
-        title: "",
         genres: "",
         releaseYear: "",
         minRating: "",

@@ -3,9 +3,13 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
-    name: "dashboard",
+    redirect: { name: "movies" },
+  },
+  {
+    path: "/movies",
+    name: "movies",
     component: () =>
-      import(/* webpackChunkName: "dashboard" */ "../views/Dashboard.vue"),
+      import(/* webpackChunkName: "dashboard" */ "../views/Movies.vue"),
   },
   {
     path: "/movie/:id",
