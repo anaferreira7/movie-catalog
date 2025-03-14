@@ -27,10 +27,12 @@ a.nav-item {
   @apply text-white hover:text-[#BA64FE] tracking-wider font-medium;
 }
 
-.nav-item.router-link-exact-active {
+.nav-item.router-link-exact-active,
+.nav-item.current {
   @apply text-[#BA64FE] relative;
 }
-.nav-item.router-link-exact-active::after {
+.nav-item.router-link-exact-active::after,
+.nav-item.current::after {
   content: "";
   position: absolute;
   left: 50%;

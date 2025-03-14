@@ -1,7 +1,10 @@
 <template>
   <div class="flex justify-between items-center px-6 py-4">
     <div class="">
-      <button class="uppercase font-bold text-white w-fit">
+      <button
+        @click="goToMovies()"
+        class="uppercase font-bold text-white w-fit"
+      >
         <span class="block text-4xl leading-8"> Movie </span>
         <span class="text-[1.55rem] w-full text-center leading-5">
           Catalog
@@ -10,7 +13,7 @@
     </div>
     <div class="flex items-center gap-x-8">
       <NavBar />
-      <Search @update-search="updateSearchHandler" />
+      <Search />
     </div>
   </div>
 </template>
@@ -23,8 +26,8 @@ export default {
   name: "TopBar",
   components: { NavBar, Search },
   methods: {
-    updateSearchHandler(searchText) {
-      console.log(searchText);
+    goToMovies() {
+      this.$router.push({ name: "movies" });
     },
   },
 };

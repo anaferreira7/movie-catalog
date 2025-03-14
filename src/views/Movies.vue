@@ -24,13 +24,14 @@
           v-for="movie in movies"
           :key="movie.id"
           :to="{ name: 'movieDetails', params: { id: movie.id } }"
-          class="bg-black p-4"
+          class="bg-black p-4 rounded-lg relative"
         >
           <img
             :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
             alt="Movie poster"
-            class="w-full h-auto object-cover rounded mb-4"
+            class="w-full h-auto object-cover rounded-md mb-4"
           />
+          <AddToFav class="absolute top-0 right-0 opacity-50" />
           <h3 class="font-medium text-lg">{{ movie.title }}</h3>
           <p class="text-gray-600">{{ movie.release_date }}</p>
           <!-- <p
@@ -85,12 +86,14 @@
 </template>
 
 <script>
-import { getMovies } from "../services/api.js";
+import { getMovies, searchMovies, getGenreList } from "../services/index.js";
+import AddToFav from "@/components/AddToFav.vue";
 // import Filters from "@/components/Filters.vue";
 
 export default {
   name: "MoviesView",
   components: {
+    AddToFav,
     /*Filters*/
   },
   data() {
@@ -101,16 +104,43 @@ export default {
     };
   },
 
+  watch: {
+    "$route.query.search": function (val) {
+      if (val) {
+        try {
+          searchMovies(val)
+            .then((res) => {
+              this.movies = res.data.results;
+            })
+            .catch((err) => {
+              console.error("Something went wrong with the search", err);
+            });
+        } catch (err) {
+          console.error(err);
+        }
+      } else {
+        this.fetchMovies();
+      }
+    },
+  },
+
   async created() {
-    try {
-      const res = await getMovies();
-      this.movies = res.data.results;
-    } catch (error) {
-      console.error("Failed to fetch movies:", error);
-    }
+    this.fetchMovies();
+    this.fetchGenreList();
   },
 
   methods: {
+    async fetchGenreList() {
+      getGenreList().then((res) => {
+        this.$store.commit("movies/SET_GENRES", res.data.genres);
+        this.genres = res.data.genres;
+      });
+    },
+    async fetchMovies() {
+      getMovies().then((res) => {
+        this.movies = res.data.results;
+      });
+    },
     // async updateFiltersHandler(filters) {
     //   const movieData = await getMovies(this.currentPage, filters);
     //   this.movies = movieData.results;

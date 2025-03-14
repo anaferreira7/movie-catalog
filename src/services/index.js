@@ -24,7 +24,7 @@ export function getMovies(page = 1, filters = {}) {
   });
 }
 
-export function fetchMovieDetails(id) {
+export function getMovieDetails(id) {
   return httpClient.get(`${process.env.VUE_APP_API_URL}/movie/${id}`);
 }
 
@@ -34,6 +34,10 @@ export function searchMovies(searchText) {
       query: searchText,
     },
   });
+}
+
+export function getGenreList() {
+  return httpClient.get(`${process.env.VUE_APP_API_URL}/genre/movie/list`);
 }
 
 // export default getGenresMovieList

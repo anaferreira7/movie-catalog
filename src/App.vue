@@ -10,6 +10,7 @@ export default {
   components: {
     TopBar,
   },
+  created() {},
 };
 </script>
 
