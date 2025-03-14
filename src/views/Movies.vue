@@ -24,16 +24,20 @@
           v-for="movie in movies"
           :key="movie.id"
           :to="{ name: 'movieDetails', params: { id: movie.id } }"
-          class="bg-black p-4 rounded-lg relative"
+          class="rounded-xl relative"
         >
           <img
             :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
             alt="Movie poster"
             class="w-full h-auto object-cover rounded-md mb-4"
           />
-          <AddToFav class="absolute top-0 right-0 opacity-50" />
-          <h3 class="font-medium text-lg">{{ movie.title }}</h3>
-          <p class="text-gray-600">{{ movie.release_date }}</p>
+          <AddToFav class="absolute top-2 right-2" />
+          <div
+            class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end"
+          >
+            <h3 class="font-medium text-lg">{{ movie.title }}</h3>
+            <p class="text-gray-600">{{ movie.release_date }}</p>
+          </div>
           <!-- <p
             v-for="genreId in movie.genre_ids"
             :key="genreId"
