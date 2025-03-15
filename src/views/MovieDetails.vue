@@ -19,7 +19,7 @@
         <div>
           <div class="flex justify-between">
             <h1 class="text-3xl">{{ movie.title }}</h1>
-            <AddToFav />
+            <AddToFav :movie="movie" />
           </div>
           <div class="flex gap-x-6">
             <p>{{ getYearFromStringDate(movie.release_date) }}</p>
@@ -66,14 +66,14 @@
 
 <script>
 import { getMovieDetails, getRelatedMovies } from "../services/api/movies.js";
-import AddToFav from "@/components/AddToFav.vue";
+import AddToFav from "@/components/AddToFavButton.vue";
 
 export default {
-  props: ["id"],
   components: { AddToFav },
 
   data() {
     return {
+      id: this.$route.params.id,
       movie: null,
       relatedMovies: null,
       imgsUrl:

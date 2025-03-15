@@ -5,10 +5,8 @@
         @click="goToMovies()"
         class="uppercase font-bold text-white w-fit"
       >
-        <span class="block text-4xl leading-8"> Movie </span>
-        <span class="text-[1.55rem] w-full text-center leading-5">
-          Catalog
-        </span>
+        <span class="block text-xl"> Movie </span>
+        <span class="text-sm w-full text-center"> Catalog </span>
       </button>
     </div>
     <div class="flex items-center gap-x-8">

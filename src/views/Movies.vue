@@ -31,7 +31,7 @@
             alt="Movie poster"
             class="w-full h-auto object-cover rounded-md mb-4"
           />
-          <AddToFav class="absolute top-2 right-2" />
+          <AddToFav :movie="movie" class="absolute z-[1] top-0 right-0" />
           <div
             class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end"
           >
@@ -91,7 +91,7 @@
 
 <script>
 import { getMovies, searchMovies, getGenreList } from "../services/index.js";
-import AddToFav from "@/components/AddToFav.vue";
+import AddToFav from "@/components/AddToFavButton.vue";
 // import Filters from "@/components/Filters.vue";
 
 export default {

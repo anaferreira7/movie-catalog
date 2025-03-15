@@ -1,39 +1,49 @@
+import { getFavoriteMovies } from "@/services/api/user";
+
 export default {
+  namespaced: true,
   state: () => ({
-    username: null,
-    sessionId: null,
-    favoriteMovies: [],
+    favoriteMovies: JSON.parse(localStorage.getItem("favoriteMovies")) || [],
   }),
   mutations: {
-    SET_USERNAME(state, user) {
-      state.user = user;
-    },
-    SET_SESSION_ID(state, sessionId) {
-      state.sessionId = sessionId;
-    },
     SET_FAVORITE_MOVIES(state, movies) {
       state.favoriteMovies = movies;
+      localStorage.setItem("favoriteMovies", JSON.stringify(movies));
+    },
+    ADD_FAVORITE_MOVIE(state, movie) {
+      if (!state.favoriteMovies.find((fav) => fav.id === movie.id)) {
+        state.favoriteMovies.push(movie);
+        localStorage.setItem(
+          "favoriteMovies",
+          JSON.stringify(state.favoriteMovies)
+        );
+      }
+    },
+    REMOVE_FAVORITE_MOVIE(state, movieId) {
+      state.favoriteMovies = state.favoriteMovies.filter(
+        (movie) => movie.id !== movieId
+      );
+      localStorage.setItem(
+        "favoriteMovies",
+        JSON.stringify(state.favoriteMovies)
+      );
     },
   },
   actions: {
-    // async fetchFavoriteMovies({ commit, state }) {
-    //   if (!state.sessionId && !state.guestSessionId) return;
-    //   try {
-    //     const sessionType = state.sessionId
-    //       ? `session_id=${state.sessionId}`
-    //       : `guest_session_id=${state.guestSessionId}`;
-    //     const response = await axios.get(
-    //       `${BASE_URL}/account/{account_id}/favorite/movies?api_key=${API_KEY}&${sessionType}`
-    //     );
-    //     commit("SET_FAVORITE_MOVIES", response.data.results);
-    //   } catch (error) {
-    //     commit("SET_ERROR", error.message);
-    //   }
-    // },
+    async getUserPreferences({ commit }) {
+      getFavoriteMovies()
+        .then((res) => {
+          if (!!res.data.results.length) {
+            commit("SET_FAVORITE_MOVIES", res.data.results);
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
   },
   getters: {
-    currentUser: (state) => state.user,
-    guestSession: (state) => state.guestSessionId,
-    favoriteMovies: (state) => state.favoriteMovies,
+    isFavorite: (state) => (movieId) =>
+      state.favoriteMovies.find((movie) => movie.id === movieId),
   },
 };
