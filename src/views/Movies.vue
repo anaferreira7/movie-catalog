@@ -15,7 +15,7 @@
       </select>
     </div> -->
 
-    <GenreList @genresSelected="handleGenresSelection" />
+    <!-- <GenreList @genresSelected="handleGenresSelection" /> -->
 
     <!-- Movie list -->
     <div v-if="movies.length > 0">
@@ -60,7 +60,7 @@
 
 <script>
 import { searchMovies, getGenreList } from "../services/index.js";
-import GenreList from "@/components/GenreList.vue";
+// import GenreList from "@/components/GenreList.vue";
 
 import AddToFav from "@/components/AddToFavButton.vue";
 // import Filters from "@/components/Filters.vue";
@@ -69,7 +69,7 @@ export default {
   name: "MoviesView",
   components: {
     AddToFav,
-    GenreList,
+    /* GenreList,*/
     /*Filters*/
   },
   data() {
@@ -120,10 +120,10 @@ export default {
         this.genres = res.data.genres;
       });
     },
-    handleGenresSelection(genres) {
-      this.selectedGenres = genres; // Update the selected genres
-      // You can trigger a search or filter based on the selected genres
-    },
+    // handleGenresSelection(genres) {
+    //   this.selectedGenres = genres; // Update the selected genres
+    //   // You can trigger a search or filter based on the selected genres
+    // },
     // async updateFiltersHandler(filters) {
     //   const movieData = await getMovies(this.currentPage, filters);
     //   this.movies = movieData.results;

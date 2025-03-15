@@ -30,7 +30,7 @@
       placeholder="Select Genres"
     />
 
-    <p>Release Year:</p>
+    <p class="mt-6">Release Year:</p>
     <DropdownSelect
       v-model="filters.releaseYear"
       :items="availableYears"
@@ -64,7 +64,7 @@ export default {
         genres: [],
         releaseYear: null,
       },
-      availableYears: this.generateYears(),
+      availableYears: this.generateYears(), //TODO improve so it doesnt run everytime the component is mounted
     };
   },
   methods: {
@@ -75,14 +75,21 @@ export default {
       for (let year = currentYear; year >= startYear; year--) {
         years.push({ year });
       }
-      console.log("years", years);
       return years;
     },
 
     updateFilters() {
+      if (this.filters.genres.length) {
+        this.filters.genres = this.filters.genres.map((genre) => genre.id);
+      }
+      if (this.filters.releaseYear) {
+        this.filters.releaseYear = this.filters.releaseYear.year;
+      }
+      console.log("updateFilters", this.filters);
+
       // Update the filter data in the Vuex store
       this.$store.dispatch("filters/updateFilters", this.filters);
-      this.$emit("updateFilters", this.filters);
+      this.closeFiltersComp();
     },
     closeFiltersComp() {
       this.$emit("close");

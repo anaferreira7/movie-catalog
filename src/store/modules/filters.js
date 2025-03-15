@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     genres: [],
-    releaseYears: null,
+    releaseYear: null,
   },
   mutations: {
     setFilters(state, filters) {
@@ -15,9 +15,11 @@ export default {
     },
   },
   actions: {
-    updateFilters({ commit }, filters) {
+    async updateFilters({ commit, dispatch }, filters) {
+      await dispatch("movies/fetchMovies", filters, { root: true });
       commit("setFilters", filters);
     },
+
     resetFilters({ commit }) {
       commit("resetFilters");
     },

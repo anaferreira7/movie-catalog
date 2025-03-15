@@ -7,10 +7,10 @@
     >
       <div
         v-for="item in selectedItems"
-        :key="item[valueKey]"
+        :key="valueKey ? item[valueKey] : item"
         class="flex items-center bg-[#BA64FE] text-white px-3 py-1 rounded-full text-sm"
       >
-        {{ item[labelKey] }}
+        {{ labelKey ? item[labelKey] : item }}
         <button
           @click.stop="removeSelection(item)"
           class="ml-2 text-white hover:text-gray-200"
@@ -25,8 +25,8 @@
       @click="toggleDropdown"
       class="w-full flex justify-between items-center px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none"
     >
-      <span v-if="!selectedItems.length">{{ placeholder }}</span>
-      <span v-else>{{ displayText }}</span>
+      <span v-if="!selectedItems.length"> {{ placeholder }} </span>
+      <span v-else> {{ displayText }} </span>
       <svg
         class="w-4 h-4 ml-2 transition-transform transform"
         :class="{ 'rotate-180': isOpen }"
@@ -52,12 +52,12 @@
       <div class="p-2">
         <button
           v-for="item in items"
-          :key="item[valueKey]"
+          :key="valueKey ? item[valueKey] : item"
           @click="toggleSelection(item)"
           class="w-full text-left px-4 py-2 rounded-md text-white hover:bg-[#BA64FE] transition"
           :class="{ 'bg-[#BA64FE]': isSelected(item) }"
         >
-          {{ item[labelKey] }}
+          {{ labelKey ? item[labelKey] : item }}
         </button>
       </div>
     </div>
@@ -71,8 +71,8 @@ export default {
     modelValue: Array, // For v-model binding
     items: { type: Array, required: true }, // List of dropdown options
     multiple: { type: Boolean, default: true }, // Allow multiple selections
-    labelKey: { type: String, default: "name" }, // Key for label display
-    valueKey: { type: String, default: "id" }, // Key for values
+    labelKey: { type: String, required: false }, // Key for label display
+    valueKey: { type: String, required: false }, // Key for values
     placeholder: { type: String, default: "Select an option" },
   },
   data() {

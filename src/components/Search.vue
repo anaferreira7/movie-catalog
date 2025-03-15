@@ -68,7 +68,6 @@ export default {
           return;
         }
         this.$router.push({ query: { search: this.searchText } });
-        console.log(1, this.searchText);
       }, 500); // 500ms delay for debounce
     },
   },

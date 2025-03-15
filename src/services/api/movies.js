@@ -1,23 +1,24 @@
 import httpClient from "../../helpers/httpClient.js";
 
 /* link https://developer.themoviedb.org/reference/discover-movie */
-export function getMovies(page = 1, filters = {}) {
+export function getMovies(filters = {}, page = 1) {
+  console.log("getMovies");
+
   const params = {
     page,
   };
+  console.log("params1", params);
 
-  if (!!filters.genres) {
-    params.with_genres = filters.genres;
+  if (filters.genres?.length) {
+    const filtersIds = filters.genres.join(",");
+
+    params["with_genres"] = filtersIds;
   }
-  if (!!filters.releaseYear) {
-    params.primary_release_year = filters.releaseYear;
+  if (filters.releaseYear) {
+    params["primary_release_year"] = filters.releaseYear;
   }
-  if (!!filters.minRating) {
-    params.vote_average_gte = filters.minRating;
-  }
-  if (!!filters.maxRating) {
-    params.vote_average_lte = filters.maxRating;
-  }
+
+  console.log("params2", params);
 
   return httpClient.get(`${process.env.VUE_APP_API_URL}/discover/movie`, {
     params,

@@ -15,15 +15,16 @@ export default {
     },
   },
   actions: {
-    async fetchMovies({ commit }) {
+    async fetchMovies({ commit }, filters = {}) {
+      console.log("fetchMoviesStore", filters);
+
       // commit("SET_LOADING", true);
-      getMovies()
+      getMovies(filters)
         .then((res) => {
-          console.log("Movies fetched:", res); // Debugging log
           commit("SET_MOVIES", res.data.results);
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
       // try {
       // } catch (error) {
