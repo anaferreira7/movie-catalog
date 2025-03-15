@@ -1,4 +1,4 @@
-import { getMovies } from "../../services/api/movies.js";
+import { getMovies, searchMovies } from "../../services/api/movies.js";
 
 export default {
   namespaced: true,
@@ -32,6 +32,15 @@ export default {
       // } finally {
       //   commit("SET_LOADING", false);
       // }
+    },
+    async searchMovies({ commit }, searchText) {
+      searchMovies(searchText)
+        .then((res) => {
+          commit("SET_MOVIES", res.data.results);
+        })
+        .catch((err) => {
+          console.error("Something went wrong with the search", err);
+        });
     },
   },
   getters: {

@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { searchMovies, getGenreList } from "../services/index.js";
+import { getGenreList } from "../services/index.js";
 // import GenreList from "@/components/GenreList.vue";
 
 import AddToFav from "@/components/AddToFavButton.vue";
@@ -90,19 +90,9 @@ export default {
   watch: {
     "$route.query.search": function (val) {
       if (val) {
-        try {
-          searchMovies(val)
-            .then((res) => {
-              this.movies = res.data.results;
-            })
-            .catch((err) => {
-              console.error("Something went wrong with the search", err);
-            });
-        } catch (err) {
-          console.error(err);
-        }
+        this.$store.dispatch("movies/searchMovies", val);
       } else {
-        this.fetchMovies();
+        this.$store.dispatch("movies/fetchMovies");
       }
     },
   },
