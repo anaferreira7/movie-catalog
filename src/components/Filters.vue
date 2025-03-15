@@ -1,67 +1,50 @@
 <template>
-  <!-- Filters Section -->
-  <div class="mb-6 flex gap-x-8">
-    <!-- Genres Filter -->
-    <div class="w-fit">
-      <label for="genres" class="">Genres:</label>
-      <select
-        id="genres"
-        v-model="filters.genres"
-        class="ml-2 px-2 py-0.5 border bg-gray-700 border-gray-300 rounded"
-      >
-        <option value="">Select Genre</option>
-        <option value="28">Action</option>
-        <option value="12">Adventure</option>
-        <option value="35">Comedy</option>
-        <option value="18">Drama</option>
-        <option value="10749">Romance</option>
-        <!-- Add more genres as needed -->
-      </select>
+  <div class="fixed top-0 right-0 w-[325px] h-screen z-[2] bg-black py-4 px-6">
+    <div class="flex justify-between mb-4">
+      <h2 class="uppercase">Advanced Search</h2>
+      <button @click="closeFiltersComp">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
     </div>
 
-    <!-- Release Year Filter -->
-    <div class="w-fit">
-      <label for="releaseYear" class="">Release Year:</label>
-      <input
-        type="number"
-        id="releaseYear"
-        v-model="filters.releaseYear"
-        class="ml-2 px-2 py-0.5 border bg-gray-700 border-gray-300 rounded"
-        placeholder="Enter year"
-      />
-    </div>
+    <p>Genre:</p>
+    <DropdownSelect
+      v-model="filters.genres"
+      :items="$store.state.movies.genres"
+      labelKey="name"
+      valueKey="id"
+      multiple
+      placeholder="Select Genres"
+    />
 
-    <!-- Rating Filter -->
-    <div class="w-fit">
-      <label for="rating" class="">Rating:</label>
-      <div class="flex gap-4">
-        <input
-          type="number"
-          id="minRating"
-          v-model="filters.minRating"
-          class="px-2 py-0.5 border bg-gray-700 border-gray-300 rounded"
-          placeholder="Min"
-          step="0.1"
-          min="0"
-          max="10"
-        />
-        <input
-          type="number"
-          id="maxRating"
-          v-model="filters.maxRating"
-          class="px-2 py-0.5 border bg-gray-700 border-gray-300 rounded"
-          placeholder="Max"
-          step="0.1"
-          min="0"
-          max="10"
-        />
-      </div>
-    </div>
+    <p>Release Year:</p>
+    <DropdownSelect
+      v-model="filters.releaseYear"
+      :items="availableYears"
+      labelKey="year"
+      valueKey="year"
+      :multiple="false"
+      placeholder="Select Release Year"
+    />
 
-    <!-- Apply Filters Button -->
+    <!-- Filters Section -->
+
     <button
       @click="updateFilters"
-      class="px-2 py-0.5 bg-blue-500 text-white rounded hover:bg-blue-600"
+      class="mt-20 px-2 py-0.5 border border-[#BA64FE] text-white rounded hover:bg-[#BA64FE]"
     >
       Apply Filters
     </button>
@@ -69,25 +52,41 @@
 </template>
 
 <script>
+import DropdownSelect from "@/components/utils/DropdownSelect.vue";
+
 export default {
   name: "FiltersComp",
-
+  emits: ["close"],
+  components: { DropdownSelect },
   data() {
     return {
       filters: {
-        genres: "",
-        releaseYear: "",
-        minRating: "",
-        maxRating: "",
+        genres: [],
+        releaseYear: null,
       },
+      availableYears: this.generateYears(),
     };
   },
   methods: {
+    generateYears() {
+      const currentYear = new Date().getFullYear();
+      const startYear = 1900;
+      const years = [];
+      for (let year = currentYear; year >= startYear; year--) {
+        years.push({ year });
+      }
+      console.log("years", years);
+      return years;
+    },
+
     updateFilters() {
+      // Update the filter data in the Vuex store
+      this.$store.dispatch("filters/updateFilters", this.filters);
       this.$emit("updateFilters", this.filters);
+    },
+    closeFiltersComp() {
+      this.$emit("close");
     },
   },
 };
 </script>
-
-<style></style>

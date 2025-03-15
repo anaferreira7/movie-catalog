@@ -1,12 +1,12 @@
 <template>
-  <div class="flex justify-between items-center px-6 py-4">
-    <div class="">
+  <div class="flex justify-between items-center px-6 py-2">
+    <div>
       <button
         @click="goToMovies()"
         class="uppercase font-bold text-white w-fit"
       >
-        <span class="block text-xl"> Movie </span>
-        <span class="text-sm w-full text-center"> Catalog </span>
+        <span class="block text-xl leading-3"> Movie </span>
+        <span class="text-sm w-full text-center leading-3"> Catalog </span>
       </button>
     </div>
     <div class="flex items-center gap-x-8">

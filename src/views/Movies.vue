@@ -15,6 +15,8 @@
       </select>
     </div> -->
 
+    <GenreList @genresSelected="handleGenresSelection" />
+
     <!-- Movie list -->
     <div v-if="movies.length > 0">
       <div
@@ -36,50 +38,17 @@
             class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end"
           >
             <h3 class="font-medium text-lg">{{ movie.title }}</h3>
-            <p class="text-gray-600">{{ movie.release_date }}</p>
+            <p class="text-gray-600 text-sm">
+              {{ $getYearFromStringDate(movie.release_date) }}
+            </p>
+            <p class="text-xs text-gray-600 flex flex-wrap gap-x-1">
+              <span v-for="genreId in movie.genre_ids" :key="genreId">
+                {{ getGenreName(genreId) }}
+              </span>
+            </p>
           </div>
-          <!-- <p
-            v-for="genreId in movie.genre_ids"
-            :key="genreId"
-            class="text-gray-600"
-          >
-            {{ getGenreName(genreId) }}
-          </p> -->
         </router-link>
       </div>
-
-      <!-- Pagination -->
-      <!-- <div class="flex justify-center mt-6 space-x-2">
-        <button
-          v-if="currentPage > 1"
-          @click="loadPage(currentPage - 1)"
-          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Previous
-        </button>
-
-        <button
-          v-for="page in totalPages"
-          :key="page"
-          @click="loadPage(page)"
-          :class="[
-            'px-4 py-2 border rounded',
-            currentPage === page
-              ? 'bg-blue-500 text-white'
-              : 'bg-white text-blue-500',
-          ]"
-        >
-          {{ page }}
-        </button>
-
-        <button
-          v-if="currentPage < totalPages"
-          @click="loadPage(currentPage + 1)"
-          class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Next
-        </button>
-      </div> -->
     </div>
 
     <!-- No movies message -->
@@ -90,7 +59,9 @@
 </template>
 
 <script>
-import { getMovies, searchMovies, getGenreList } from "../services/index.js";
+import { searchMovies, getGenreList } from "../services/index.js";
+import GenreList from "@/components/GenreList.vue";
+
 import AddToFav from "@/components/AddToFavButton.vue";
 // import Filters from "@/components/Filters.vue";
 
@@ -98,16 +69,24 @@ export default {
   name: "MoviesView",
   components: {
     AddToFav,
+    GenreList,
     /*Filters*/
   },
   data() {
     return {
-      movies: [],
+      selectedGenres: [],
       perPage: 10,
       // currentPage: 1,
     };
   },
-
+  computed: {
+    movies() {
+      return this.$store.state.movies.movies;
+    },
+    getGenreName() {
+      return this.$store.getters["movies/getGenreName"];
+    },
+  },
   watch: {
     "$route.query.search": function (val) {
       if (val) {
@@ -129,7 +108,8 @@ export default {
   },
 
   async created() {
-    this.fetchMovies();
+    this.$store.dispatch("movies/fetchMovies");
+    // this.fetchMovies();
     this.fetchGenreList();
   },
 
@@ -140,10 +120,9 @@ export default {
         this.genres = res.data.genres;
       });
     },
-    async fetchMovies() {
-      getMovies().then((res) => {
-        this.movies = res.data.results;
-      });
+    handleGenresSelection(genres) {
+      this.selectedGenres = genres; // Update the selected genres
+      // You can trigger a search or filter based on the selected genres
     },
     // async updateFiltersHandler(filters) {
     //   const movieData = await getMovies(this.currentPage, filters);

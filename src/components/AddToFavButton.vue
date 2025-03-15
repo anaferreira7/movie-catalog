@@ -2,7 +2,7 @@
   <button
     @click.stop="toggleFavorite"
     class="p-2"
-    :title="isFavorite(movie.id) ? 'Remove from favorite' : 'Add to favorite'"
+    :title="isFavorite(movie?.id) ? 'Remove from favorite' : 'Add to favorite'"
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -36,10 +36,13 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("user", ["isFavorite"]),
+    ...mapGetters("userPreferences", ["isFavorite"]),
   },
   methods: {
-    ...mapMutations("user", ["ADD_FAVORITE_MOVIE", "REMOVE_FAVORITE_MOVIE"]),
+    ...mapMutations("userPreferences", [
+      "ADD_FAVORITE_MOVIE",
+      "REMOVE_FAVORITE_MOVIE",
+    ]),
     toggleFavorite() {
       if (this.isFavorite(this.movie.id)) {
         this.REMOVE_FAVORITE_MOVIE(this.movie.id);

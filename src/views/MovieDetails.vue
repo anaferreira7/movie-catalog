@@ -22,7 +22,7 @@
             <AddToFav :movie="movie" />
           </div>
           <div class="flex gap-x-6">
-            <p>{{ getYearFromStringDate(movie.release_date) }}</p>
+            <p>{{ $getYearFromStringDate(movie.release_date) }}</p>
             <div class="flex items-center gap-x-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { getMovieDetails, getRelatedMovies } from "../services/api/movies.js";
+import { getMovieDetails, getRelatedMovies } from "@/services/api/movies.js";
 import AddToFav from "@/components/AddToFavButton.vue";
 
 export default {
@@ -92,11 +92,6 @@ export default {
     } catch (err) {
       console.error("Error fetching movie data or related movies:", err);
     }
-  },
-  methods: {
-    getYearFromStringDate(string) {
-      return new Date(string).getFullYear();
-    },
   },
 };
 </script>

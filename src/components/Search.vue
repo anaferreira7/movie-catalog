@@ -1,5 +1,5 @@
 <template>
-  <div class="w-[300px] flex flex-col justify-end mt-4">
+  <div class="w-[300px] flex flex-col justify-end pt-4">
     <div
       class="bg-black rounded-full overflow-hidden flex items-center px-4 border border-transparent focus-within:border-[#BA64FE] transition"
     >
@@ -26,26 +26,39 @@
         />
       </svg>
     </div>
-    <button class="text-sm text-gray-400 text-right mt-1">
+    <button
+      @click="openFiltersComp"
+      class="text-sm text-gray-400 text-right mt-1"
+    >
       Advanced search
     </button>
+    <Filters v-if="isFiltersOpen" @close="closeFiltersHandler" />
   </div>
 </template>
 
 <script>
+import Filters from "@/components/Filters.vue";
 export default {
   name: "SearchComp",
-
+  components: { Filters },
   emits: ["updateSearch"],
 
   data() {
     return {
       searchText: "",
       debounceTimeout: null,
+      isFiltersOpen: false,
     };
   },
 
   methods: {
+    closeFiltersHandler() {
+      this.isFiltersOpen = false;
+    },
+
+    openFiltersComp() {
+      this.isFiltersOpen = true;
+    },
     searchDebounce() {
       clearTimeout(this.debounceTimeout);
 
