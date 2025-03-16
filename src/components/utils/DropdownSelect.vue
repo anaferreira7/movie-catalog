@@ -47,7 +47,7 @@
     <!-- Dropdown List -->
     <div
       v-if="isOpen"
-      class="absolute mt-2 w-full bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto"
+      class="absolute mt-2 w-full bg-gray-800 border border-gray-600 rounded-lg shadow-md z-10 max-h-60 overflow-y-auto"
     >
       <div class="p-2">
         <button

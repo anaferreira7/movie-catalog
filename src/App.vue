@@ -19,9 +19,9 @@ body {
   background: rgb(27, 24, 32);
   background: linear-gradient(
     120deg,
-    rgba(27, 24, 32, 1) 0%,
-    rgba(37, 29, 50, 1) 57%,
-    rgba(66, 38, 113, 1) 100%
+    rgb(20, 18, 24) 0%,
+    rgb(28, 22, 39) 57%,
+    rgb(45, 32, 67) 100%
   );
   @apply text-white min-h-screen;
 }

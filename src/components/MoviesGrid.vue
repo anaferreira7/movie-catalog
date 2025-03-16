@@ -7,8 +7,7 @@
       v-for="movie in movies"
       :key="movie.id"
       :to="{ name: 'movieDetails', params: { id: movie.id } }"
-      class="rounded-xl relative"
-      @click.stop
+      class="rounded-xl relative overflow-hidden shadow-md shadow-black"
     >
       <img
         :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"

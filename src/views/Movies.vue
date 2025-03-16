@@ -3,7 +3,7 @@
     <!-- Display Active Search Query -->
     <div
       v-if="$route.query.search"
-      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-xl mb-4"
+      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-md shadow-black mb-4"
     >
       <div class="flex justify-between items-center">
         <h3 class="text-lg uppercase font-semibold">Search Results</h3>
@@ -36,7 +36,7 @@
     <!-- Display Active Filters -->
     <div
       v-if="hasFilters"
-      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-xl mb-4"
+      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-md shadow-black mb-4"
     >
       <div class="flex justify-between items-center">
         <h3 class="text-lg uppercase font-semibold">Applied Filters</h3>
