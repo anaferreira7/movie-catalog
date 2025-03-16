@@ -1,15 +1,14 @@
 <template>
-  <div class="flex justify-between items-center px-6 py-2">
-    <div>
-      <button
-        @click="goToMovies()"
-        class="uppercase font-bold text-white w-fit"
-      >
-        <span class="block text-xl leading-3"> Movie </span>
-        <span class="text-sm w-full text-center leading-3"> Catalog </span>
-      </button>
-    </div>
-    <div class="flex items-center gap-x-8">
+  <div class="flex justify-between flex-wrap items-center px-6 py-2">
+    <button
+      @click="goToMovies()"
+      class="uppercase font-bold text-white w-full mb-2 sm:w-fit sm:mb-0 mt-4 sm:mt-0"
+    >
+      <span class="block text-xl leading-3"> Movie </span>
+      <span class="text-sm w-full text-center leading-3"> Catalog </span>
+    </button>
+
+    <div class="w-full sm:w-fit flex items-center sm:gap-x-8">
       <NavBar />
       <Search />
     </div>

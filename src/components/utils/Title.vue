@@ -1,5 +1,5 @@
 <template>
-  <h1 class="uppercase font-bold text-5xl text-white">{{ text }}</h1>
+  <h1 class="uppercase font-bold text-xl sm:text-5xl text-white">{{ text }}</h1>
 </template>
 
 <script>

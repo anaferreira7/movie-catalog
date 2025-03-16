@@ -16,7 +16,14 @@ export default {
 
 <style lang="postcss">
 body {
-  @apply bg-[#1B1820] text-white;
+  background: rgb(27, 24, 32);
+  background: linear-gradient(
+    120deg,
+    rgba(27, 24, 32, 1) 0%,
+    rgba(37, 29, 50, 1) 80%,
+    rgba(66, 38, 113, 1) 100%
+  );
+  @apply text-white;
 }
 
 #app {

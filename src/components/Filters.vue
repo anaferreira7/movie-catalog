@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed top-0 right-0 w-[325px] h-screen z-[2] bg-black py-4 px-6 text-white"
+    class="fixed top-0 right-0 w-full sm:w-[325px] h-screen z-[2] bg-black py-4 px-6 text-white"
   >
     <!-- Header -->
     <div class="flex justify-between items-center mb-6">

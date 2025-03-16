@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <ul class="flex gap-8">
+    <ul class="hidden md:flex gap-8">
       <li>
         <span class="nav-item cursor-not-allowed"> Home </span>
       </li>

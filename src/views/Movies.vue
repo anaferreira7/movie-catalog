@@ -83,6 +83,7 @@
     </div>
 
     <!-- Movies Grid -->
+    <Title text="Movies" />
     <MoviesGrid :movies="$store.state.movies.movies" />
 
     <!-- Pagination -->
@@ -100,12 +101,14 @@
 <script>
 import MoviesGrid from "@/components/MoviesGrid.vue";
 import Pagination from "@/components/utils/Pagination.vue";
+import Title from "@/components/utils/Title.vue";
 
 export default {
   name: "MoviesView",
   components: {
     MoviesGrid,
     Pagination,
+    Title,
   },
   data() {
     return {
