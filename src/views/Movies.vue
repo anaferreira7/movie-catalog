@@ -99,7 +99,6 @@ export default {
 
   async created() {
     this.$store.dispatch("movies/fetchMovies");
-    // this.fetchMovies();
     this.fetchGenreList();
   },
 

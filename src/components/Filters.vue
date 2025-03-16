@@ -40,7 +40,30 @@
       placeholder="Select Release Year"
     />
 
-    <!-- Filters Section -->
+    <p class="mt-6">Rating:</p>
+    <div class="flex gap-x-1">
+      <button
+        v-for="star in 10"
+        :key="star"
+        :title="star"
+        @click="setRating(star)"
+        @mouseover="hoverRating(star)"
+        @mouseleave="clearHover"
+        :class="[
+          'text-2xl',
+          {
+            'text-yellow-400': star <= filters.rating,
+            'text-gray-400': star > filters.rating,
+            'cursor-pointer': true,
+          },
+        ]"
+      >
+        ★
+      </button>
+    </div>
+    <span v-if="filters.rating" class="ml-2 text-xl text-white">{{
+      filters.rating
+    }}</span>
 
     <button
       @click="updateFilters"
@@ -53,6 +76,7 @@
 
 <script>
 import DropdownSelect from "@/components/utils/DropdownSelect.vue";
+// import Movies from "@/views/Movies.vue";
 
 export default {
   name: "FiltersComp",
@@ -63,11 +87,21 @@ export default {
       filters: {
         genres: [],
         releaseYear: null,
+        rating: null,
       },
       availableYears: this.generateYears(), //TODO improve so it doesnt run everytime the component is mounted
     };
   },
   methods: {
+    setRating(rating) {
+      this.filters.rating = rating;
+    },
+    hoverRating(rating) {
+      this.hoveredRating = rating;
+    },
+    clearHover() {
+      this.hoveredRating = null;
+    },
     generateYears() {
       const currentYear = new Date().getFullYear();
       const startYear = 1900;
@@ -78,7 +112,7 @@ export default {
       return years;
     },
 
-    updateFilters() {
+    async updateFilters() {
       if (this.filters.genres.length) {
         this.filters.genres = this.filters.genres.map((genre) => genre.id);
       }
@@ -88,7 +122,8 @@ export default {
       console.log("updateFilters", this.filters);
 
       // Update the filter data in the Vuex store
-      this.$store.dispatch("filters/updateFilters", this.filters);
+      await this.$store.dispatch("filters/updateFilters", this.filters);
+      this.$router.push({ name: "movies" });
       this.closeFiltersComp();
     },
     closeFiltersComp() {

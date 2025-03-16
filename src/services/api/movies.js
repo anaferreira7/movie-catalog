@@ -7,7 +7,6 @@ export function getMovies(filters = {}, page = 1) {
   const params = {
     page,
   };
-  console.log("params1", params);
 
   if (filters.genres?.length) {
     const filtersIds = filters.genres.join(",");
@@ -17,8 +16,9 @@ export function getMovies(filters = {}, page = 1) {
   if (filters.releaseYear) {
     params["primary_release_year"] = filters.releaseYear;
   }
-
-  console.log("params2", params);
+  if (filters.rating) {
+    params["vote_average.gte"] = parseFloat(filters.rating);
+  }
 
   return httpClient.get(`${process.env.VUE_APP_API_URL}/discover/movie`, {
     params,

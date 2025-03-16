@@ -16,8 +16,6 @@ export default {
   },
   actions: {
     async fetchMovies({ commit }, filters = {}) {
-      console.log("fetchMoviesStore", filters);
-
       // commit("SET_LOADING", true);
       getMovies(filters)
         .then((res) => {
