@@ -1,4 +1,8 @@
-import { getMovies, searchMovies } from "../../services/api/movies.js";
+import {
+  getMovies,
+  searchMovies,
+  getGenreList,
+} from "../../services/api/movies.js";
 
 export default {
   namespaced: true,
@@ -31,6 +35,23 @@ export default {
       //   commit("SET_LOADING", false);
       // }
     },
+    async fetchGenres({ commit }) {
+      // commit("SET_LOADING", true);
+      getGenreList()
+        .then((res) => {
+          commit("SET_GENRES", res.data.genres);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+      // try {
+      // } catch (error) {
+      //   commit("SET_ERROR", error.message);
+      // } finally {
+      //   commit("SET_LOADING", false);
+      // }
+    },
+
     async searchMovies({ commit }, searchText) {
       searchMovies(searchText)
         .then((res) => {
