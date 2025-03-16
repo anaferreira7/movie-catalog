@@ -61,7 +61,7 @@ export default {
   watch: {
     "$route.query.search": async function (val) {
       if (val) {
-        console.log("tem search");
+        console.log("Search movies in Search");
 
         await this.$store.dispatch("movies/searchMovies", val);
         if (this.$route.name !== "movies") {
@@ -69,8 +69,8 @@ export default {
         }
       } else {
         this.searchText = "";
+        console.log("Fetch movies in Search");
         this.$store.dispatch("movies/fetchMovies");
-        console.log("nao tem search");
       }
     },
   },

@@ -20,10 +20,10 @@ body {
   background: linear-gradient(
     120deg,
     rgba(27, 24, 32, 1) 0%,
-    rgba(37, 29, 50, 1) 80%,
+    rgba(37, 29, 50, 1) 57%,
     rgba(66, 38, 113, 1) 100%
   );
-  @apply text-white;
+  @apply text-white min-h-screen;
 }
 
 #app {

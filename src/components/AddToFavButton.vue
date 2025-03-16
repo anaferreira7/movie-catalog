@@ -1,6 +1,6 @@
 <template>
   <button
-    @click.stop="toggleFavorite"
+    @click.prevent="toggleFavorite"
     class="p-2"
     :title="isFavorite(movie?.id) ? 'Remove from favorite' : 'Add to favorite'"
   >

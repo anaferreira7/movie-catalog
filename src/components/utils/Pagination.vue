@@ -1,6 +1,6 @@
 <template>
   <!-- Page Navigation -->
-  <div class="flex items-center justify-center space-x-2 mt-4">
+  <div class="flex items-center flex-wrap space-x-2 mt-4">
     <button
       @click="changePage(1)"
       :disabled="currentPage === 1"
@@ -56,23 +56,53 @@ export default {
     currentPage: Number,
     totalPages: Number,
   },
+  data() {
+    return {
+      screenWidth: window.innerWidth,
+    };
+  },
   computed: {
     visiblePages() {
       const pages = [];
-      let start = Math.max(1, this.currentPage - 2);
-      let end = Math.min(this.totalPages, this.currentPage + 2);
+
+      // Determine page range based on screen width
+      const pageRange =
+        this.screenWidth <= 640 ? 1 : this.screenWidth <= 768 ? 3 : 5; // 1 page for small, 3 for sm, 5 for md+
+
+      let start = Math.max(1, this.currentPage - Math.floor(pageRange / 2));
+      let end = Math.min(
+        this.totalPages,
+        this.currentPage + Math.floor(pageRange / 2)
+      );
+
+      // Adjust for edge cases where pages might be less than the range
+      if (end - start < pageRange - 1) {
+        if (start === 1) end = Math.min(this.totalPages, start + pageRange - 1);
+        if (end === this.totalPages) start = Math.max(1, end - pageRange + 1);
+      }
+
+      // Push the pages to the array
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
       return pages;
     },
   },
+  mounted() {
+    window.addEventListener("resize", this.handleResize);
+  },
   methods: {
+    handleResize() {
+      this.screenWidth = window.innerWidth;
+    },
     changePage(page) {
       if (page >= 1 && page <= this.totalPages) {
         this.$emit("update:currentPage", page);
       }
     },
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>

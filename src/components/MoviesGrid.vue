@@ -8,6 +8,7 @@
       :key="movie.id"
       :to="{ name: 'movieDetails', params: { id: movie.id } }"
       class="rounded-xl relative"
+      @click.stop
     >
       <img
         :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
@@ -50,8 +51,6 @@ export default {
   data() {
     return {
       selectedGenres: [],
-      perPage: 10,
-      // currentPage: 1,
     };
   },
   computed: {

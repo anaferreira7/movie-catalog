@@ -9,6 +9,7 @@ export default {
   state: () => ({
     movies: [],
     totalPages: 1,
+    currentPage: 1,
     genres: [],
   }),
   mutations: {
@@ -21,6 +22,9 @@ export default {
     SET_TOTAL_PAGES(state, totalPages) {
       state.totalPages = totalPages;
     },
+    SET_CURRENT_PAGE(state, page) {
+      state.currentPage = page;
+    },
   },
   actions: {
     async fetchMovies({ commit }, { filters = {}, page = 1 } = {}) {
@@ -29,19 +33,13 @@ export default {
         .then((res) => {
           commit("SET_MOVIES", res.data.results);
           commit("SET_TOTAL_PAGES", res.data.total_pages);
+          commit("SET_CURRENT_PAGE", res.data.page);
         })
         .catch((err) => {
           console.error(err);
         });
-      // try {
-      // } catch (error) {
-      //   commit("SET_ERROR", error.message);
-      // } finally {
-      //   commit("SET_LOADING", false);
-      // }
     },
     async fetchGenres({ commit }) {
-      // commit("SET_LOADING", true);
       getGenreList()
         .then((res) => {
           commit("SET_GENRES", res.data.genres);
@@ -49,12 +47,6 @@ export default {
         .catch((err) => {
           console.error(err);
         });
-      // try {
-      // } catch (error) {
-      //   commit("SET_ERROR", error.message);
-      // } finally {
-      //   commit("SET_LOADING", false);
-      // }
     },
 
     async searchMovies({ commit }, searchText) {
