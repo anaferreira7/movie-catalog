@@ -8,6 +8,7 @@ export default {
   namespaced: true,
   state: () => ({
     movies: [],
+    totalPages: 1,
     genres: [],
   }),
   mutations: {
@@ -17,13 +18,17 @@ export default {
     SET_GENRES(state, genres) {
       state.genres = genres;
     },
+    SET_TOTAL_PAGES(state, totalPages) {
+      state.totalPages = totalPages;
+    },
   },
   actions: {
-    async fetchMovies({ commit }, filters = {}) {
+    async fetchMovies({ commit }, { filters = {}, page = 1 } = {}) {
       // commit("SET_LOADING", true);
-      getMovies(filters)
+      getMovies({ ...filters, page })
         .then((res) => {
           commit("SET_MOVIES", res.data.results);
+          commit("SET_TOTAL_PAGES", res.data.total_pages);
         })
         .catch((err) => {
           console.error(err);

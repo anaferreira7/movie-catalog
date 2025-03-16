@@ -1,7 +1,7 @@
 import httpClient from "../../helpers/httpClient.js";
 
 /* link https://developer.themoviedb.org/reference/discover-movie */
-export function getMovies(filters = {}, page = 1) {
+export function getMovies({ page = 1, ...filters }) {
   console.log("getMovies");
 
   const params = {

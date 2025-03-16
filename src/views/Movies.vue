@@ -1,22 +1,14 @@
 <template>
   <div class="px-6 py-4">
-    <!-- <Filters @update-filters="updateFiltersHandler" /> -->
-
-    <!-- Movies per Page Dropdown -->
-    <!-- <div class="mb-4">
-      <label for="moviesPerPage" class="text-lg">Movies per page:</label>
-      <select
-        id="moviesPerPage"
-        v-model="perPage"
-        class="ml-2 p-2 border bg-gray-700 border-gray-300 rounded"
-      >
-        <option :value="10">10</option>
-        <option :value="20">20</option>
-      </select>
-    </div> -->
-
     <MoviesGrid :movies="$store.state.movies.movies" />
-    <Pagination />
+
+    <Pagination
+      :currentPage="currentPage"
+      :totalPages="$store.state.movies.totalPages"
+      :perPage="perPage"
+      @update:currentPage="updatePage"
+    />
+    <!-- @update:perPage="updatePerPage" -->
   </div>
 </template>
 
@@ -31,24 +23,42 @@ export default {
     Pagination,
   },
   data() {
-    return {};
+    return {
+      currentPage: 1,
+      // perPage: 10,
+    };
   },
-  computed: {},
   watch: {
-    "$route.query.search": function (val) {
+    // perPage() {
+    //   this.currentPage = 1; // Reset to first page when changing perPage
+    //   this.fetchMovies();
+    // },
+    "$route.query.search"(val) {
       if (val) {
         this.$store.dispatch("movies/searchMovies", val);
       } else {
-        this.$store.dispatch("movies/fetchMovies");
+        this.fetchMovies();
       }
     },
   },
-
+  methods: {
+    fetchMovies() {
+      this.$store.dispatch("movies/fetchMovies", {
+        page: this.currentPage,
+        // perPage: this.perPage,
+      });
+    },
+    updatePage(newPage) {
+      this.currentPage = newPage;
+      this.fetchMovies();
+    },
+    // updatePerPage(newPerPage) {
+    //   this.perPage = newPerPage;
+    // },
+  },
   async created() {
-    this.$store.dispatch("movies/fetchMovies");
+    this.fetchMovies();
     this.$store.dispatch("movies/fetchGenres");
   },
-
-  methods: {},
 };
 </script>
