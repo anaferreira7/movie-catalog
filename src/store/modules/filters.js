@@ -21,7 +21,7 @@ export default {
     async updateFilters({ commit, dispatch }, filters) {
       console.log("updateFiltersStore", filters);
 
-      await dispatch("movies/fetchMovies", filters, { root: true });
+      await dispatch("movies/fetchMovies", { filters }, { root: true });
       commit("setFilters", filters);
     },
 

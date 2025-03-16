@@ -1,7 +1,10 @@
 <template>
-  <div class="fixed top-0 right-0 w-[325px] h-screen z-[2] bg-black py-4 px-6">
-    <div class="flex justify-between mb-4">
-      <h2 class="uppercase">Advanced Search</h2>
+  <div
+    class="fixed top-0 right-0 w-[325px] h-screen z-[2] bg-black py-4 px-6 text-white"
+  >
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl uppercase font-semibold">Advanced Search</h2>
       <button @click="closeFiltersComp">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -9,7 +12,7 @@
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="size-6"
+          class="w-6 h-6 text-gray-400 hover:text-white"
         >
           <path
             stroke-linecap="round"
@@ -20,54 +23,68 @@
       </button>
     </div>
 
-    <p>Genre:</p>
-    <DropdownSelect
-      v-model="filters.genres"
-      :items="$store.state.movies.genres"
-      labelKey="name"
-      valueKey="id"
-      multiple
-      placeholder="Select Genres"
-    />
-
-    <p class="mt-6">Release Year:</p>
-    <DropdownSelect
-      v-model="filters.releaseYear"
-      :items="availableYears"
-      labelKey="year"
-      valueKey="year"
-      :multiple="false"
-      placeholder="Select Release Year"
-    />
-
-    <p class="mt-6">Rating:</p>
-    <div class="flex gap-x-1">
-      <button
-        v-for="star in 10"
-        :key="star"
-        :title="star"
-        @click="setRating(star)"
-        @mouseover="hoverRating(star)"
-        @mouseleave="clearHover"
-        :class="[
-          'text-2xl',
-          {
-            'text-yellow-400': star <= filters.rating,
-            'text-gray-400': star > filters.rating,
-            'cursor-pointer': true,
-          },
-        ]"
-      >
-        ★
-      </button>
+    <!-- Genre Dropdown -->
+    <div class="mb-6">
+      <p class="font-medium">Genre:</p>
+      <DropdownSelect
+        v-model="filters.genres"
+        :items="$store.state.movies.genres"
+        labelKey="name"
+        valueKey="id"
+        multiple
+        placeholder="Select Genres"
+        class="mt-2"
+      />
     </div>
-    <span v-if="filters.rating" class="ml-2 text-xl text-white">{{
-      filters.rating
-    }}</span>
 
+    <!-- Release Year Dropdown -->
+    <div class="mb-6">
+      <p class="font-medium">Release Year:</p>
+      <DropdownSelect
+        v-model="filters.releaseYear"
+        :items="availableYears"
+        labelKey="year"
+        valueKey="year"
+        :multiple="false"
+        placeholder="Select Release Year"
+        class="mt-2"
+      />
+    </div>
+
+    <!-- Rating Stars -->
+    <div class="mb-6">
+      <p class="font-medium">
+        Rating:
+        <span v-if="filters.rating" class="ml-1 text-white font-bold">{{
+          filters.rating
+        }}</span>
+      </p>
+      <div class="flex gap-x-1">
+        <button
+          v-for="star in 10"
+          :key="star"
+          :title="star"
+          @click="setRating(star)"
+          @mouseover="hoverRating(star)"
+          @mouseleave="clearHover"
+          :class="[
+            'text-2xl',
+            {
+              'text-yellow-400': star <= filters.rating,
+              'text-gray-400': star > filters.rating,
+              'cursor-pointer': true,
+            },
+          ]"
+        >
+          ★
+        </button>
+      </div>
+    </div>
+
+    <!-- Apply Filters Button -->
     <button
       @click="updateFilters"
-      class="mt-20 px-2 py-0.5 border border-[#BA64FE] text-white rounded hover:bg-[#BA64FE]"
+      class="w-full py-2 bg-[#BA64FE] text-white rounded-md hover:bg-[#9d47c0] transition duration-200"
     >
       Apply Filters
     </button>
@@ -76,7 +93,6 @@
 
 <script>
 import DropdownSelect from "@/components/utils/DropdownSelect.vue";
-// import Movies from "@/views/Movies.vue";
 
 export default {
   name: "FiltersComp",
@@ -89,7 +105,7 @@ export default {
         releaseYear: null,
         rating: null,
       },
-      availableYears: this.generateYears(), //TODO improve so it doesnt run everytime the component is mounted
+      availableYears: this.generateYears(),
     };
   },
   methods: {
@@ -121,7 +137,6 @@ export default {
       }
       console.log("updateFilters", this.filters);
 
-      // Update the filter data in the Vuex store
       await this.$store.dispatch("filters/updateFilters", this.filters);
       this.$router.push({ name: "movies" });
       this.closeFiltersComp();
@@ -132,3 +147,20 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* Additional styling for consistent UI */
+button {
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+</style>

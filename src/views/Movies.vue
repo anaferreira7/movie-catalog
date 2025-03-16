@@ -1,14 +1,99 @@
 <template>
-  <div class="px-6 py-4">
+  <div class="px-6 py-4 space-y-6">
+    <!-- Display Active Search Query -->
+    <div
+      v-if="$route.query.search"
+      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-xl mb-4"
+    >
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg uppercase font-semibold">Search Results</h3>
+        <button
+          @click="clearSearch"
+          class="text-sm text-gray-400 hover:text-white transition duration-200 flex items-center"
+        >
+          Clear Search
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5 text-gray-400 hover:text-red-500 transition duration-200 ml-1"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+      <p class="text-sm mt-2">
+        🔍 Showing results for: <strong>{{ $route.query.search }}</strong>
+      </p>
+    </div>
+
+    <!-- Display Active Filters -->
+    <div
+      v-if="hasFilters"
+      class="bg-black text-white px-4 pt-2 pb-3 rounded-xl shadow-xl mb-4"
+    >
+      <div class="flex justify-between items-center">
+        <h3 class="text-lg uppercase font-semibold">Applied Filters</h3>
+        <button
+          @click="resetFilters"
+          class="text-sm text-gray-400 hover:text-white transition duration-200 flex items-center"
+        >
+          Clear Filters
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            class="w-5 h-5 text-gray-400 hover:text-red-500 transition duration-200 ml-1"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex flex-wrap gap-3 text-sm mt-2">
+        <span
+          v-if="filters.genres.length"
+          class="px-3 py-1 bg-gray-800 rounded-lg"
+        >
+          🎭 Genres: <strong>{{ filters.genres.join(", ") }}</strong>
+        </span>
+        <span
+          v-if="filters.releaseYear"
+          class="px-3 py-1 bg-gray-800 rounded-lg"
+        >
+          📅 Release Year: <strong>{{ filters.releaseYear }}</strong>
+        </span>
+        <span v-if="filters.rating" class="px-3 py-1 bg-gray-800 rounded-lg">
+          <span class="text-yellow-400">★</span> Rating:
+          <strong>{{ filters.rating }}</strong>
+        </span>
+      </div>
+    </div>
+
+    <!-- Movies Grid -->
     <MoviesGrid :movies="$store.state.movies.movies" />
 
-    <Pagination
-      :currentPage="currentPage"
-      :totalPages="$store.state.movies.totalPages"
-      :perPage="perPage"
-      @update:currentPage="updatePage"
-    />
-    <!-- @update:perPage="updatePerPage" -->
+    <!-- Pagination -->
+    <div class="flex justify-center">
+      <Pagination
+        :currentPage="currentPage"
+        :totalPages="$store.state.movies.totalPages"
+        :perPage="perPage"
+        @update:currentPage="updatePage"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,40 +110,55 @@ export default {
   data() {
     return {
       currentPage: 1,
-      // perPage: 10,
     };
   },
-  watch: {
-    // perPage() {
-    //   this.currentPage = 1; // Reset to first page when changing perPage
-    //   this.fetchMovies();
-    // },
-    "$route.query.search"(val) {
-      if (val) {
-        this.$store.dispatch("movies/searchMovies", val);
-      } else {
-        this.fetchMovies();
-      }
+  computed: {
+    filters() {
+      return this.$store.state.filters; // Filters from Vuex store
+    },
+    hasFilters() {
+      return (
+        this.filters.genres.length > 0 ||
+        this.filters.releaseYear !== null ||
+        this.filters.rating !== null
+      );
     },
   },
+  watch: {
+    "$route.query.search": {
+      immediate: true,
+      handler(newSearch) {
+        if (newSearch) {
+          this.fetchMovies({ searchText: newSearch, page: 1 });
+        } else {
+          this.fetchMovies({ page: 1 });
+        }
+      },
+    },
+  },
+  async created() {
+    this.fetchMovies({ page: this.currentPage });
+    this.$store.dispatch("movies/fetchGenres");
+  },
   methods: {
-    fetchMovies() {
-      this.$store.dispatch("movies/fetchMovies", {
-        page: this.currentPage,
-        // perPage: this.perPage,
-      });
+    fetchMovies(params) {
+      if (this.hasFilters) {
+        params.filters = this.filters;
+      }
+      this.$store.dispatch("movies/fetchMovies", params);
     },
     updatePage(newPage) {
       this.currentPage = newPage;
-      this.fetchMovies();
+      this.fetchMovies({ page: newPage, searchText: this.$route.query.search });
     },
-    // updatePerPage(newPerPage) {
-    //   this.perPage = newPerPage;
-    // },
-  },
-  async created() {
-    this.fetchMovies();
-    this.$store.dispatch("movies/fetchGenres");
+    resetFilters() {
+      this.$store.dispatch("filters/resetFilters");
+      this.fetchMovies({ page: 1 });
+      this.currentPage = 1;
+    },
+    clearSearch() {
+      this.$router.replace({ query: {} });
+    },
   },
 };
 </script>

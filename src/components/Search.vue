@@ -125,7 +125,6 @@ import Filters from "@/components/Filters.vue";
 export default {
   name: "SearchComp",
   components: { Filters },
-  emits: ["updateSearch"],
 
   data() {
     return {
@@ -133,6 +132,23 @@ export default {
       debounceTimeout: null,
       isFiltersOpen: false,
     };
+  },
+
+  watch: {
+    "$route.query.search": async function (val) {
+      if (val) {
+        console.log("tem search");
+
+        await this.$store.dispatch("movies/searchMovies", val);
+        if (this.$route.name !== "movies") {
+          this.$router.push({ name: "movies", query: { search: val } });
+        }
+      } else {
+        this.searchText = "";
+        this.$store.dispatch("movies/fetchMovies");
+        console.log("nao tem search");
+      }
+    },
   },
 
   methods: {
