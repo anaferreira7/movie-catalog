@@ -1,13 +1,13 @@
 <template>
   <div v-if="movie">
-    <div class="relative min-h-[80vh] overflow-hidden py-8">
+    <div class="sm:relative min-h-[80vh] overflow-hidden py-8">
       <img
-        class="hidden sm:absolute blur-md w-full h-full object-cover object-center"
+        class="hidden sm:block absolute blur-md w-full h-full object-cover object-center"
         :src="imgsUrl + movie.backdrop_path"
         alt=""
       />
       <div
-        class="overlay sm:absolute z-[0] inset-0 bg-[#1B1820] opacity-80"
+        class="hidden overlay sm:block absolute sm:z-[0] sm:inset-0 bg-[#1B1820] opacity-80"
       ></div>
       <div
         class="sm:absolute z-[1] inset-0 w-full sm:pt-16 px-10 max-w-[1200px] mx-auto flex flex-col sm:flex-row gap-x-14"
@@ -15,12 +15,12 @@
         <img
           :src="imgsUrl + movie.poster_path"
           alt="movie poster"
-          class="w-64 h-fit rounded-lg mx-auto sm:mx-0"
+          class="w-64 h-fit rounded-lg mx-auto sm:mx-0 shadow-md shadow-gray-800"
         />
 
         <div class="mt-4 sm:mt-0">
           <div class="flex justify-between">
-            <h1 class="text-3xl">{{ movie.title }}</h1>
+            <h1 class="text-3xl font-bold">{{ movie.title }}</h1>
             <AddToFav :movie="movie" />
           </div>
           <div class="flex gap-x-6">
@@ -39,7 +39,11 @@
                 />
               </svg>
               <p>
-                <strong>{{ movie.vote_average }}</strong>
+                <strong>{{
+                  Number.isInteger(movie.vote_average)
+                    ? movie.vote_average
+                    : movie.vote_average.toFixed(1)
+                }}</strong>
                 <span class="text-xs text-gray-400"> / 10</span>
               </p>
             </div>
