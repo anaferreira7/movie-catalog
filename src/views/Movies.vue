@@ -65,7 +65,7 @@
       <div class="flex flex-wrap gap-3 text-sm mt-2">
         <span
           v-if="$store.state.filters.genres.length"
-          class="px-3 py-1 bg-gray-800 rounded-lg"
+          class="px-3 py-1 bg-gray-800 rounded-lg space-x-1 max-w-full w-fit"
         >
           🎭 Genres:
           <strong v-for="genre in $store.state.filters.genres" :key="genre">{{
