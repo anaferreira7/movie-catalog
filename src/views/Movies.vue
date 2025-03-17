@@ -157,7 +157,7 @@ export default {
       this.currentPage = newPage;
       if (this.$route.query.search) {
         this.$store.dispatch("movies/searchMovies", {
-          query: this.$route.query.search,
+          searchText: this.$route.query.search,
           page: newPage,
         });
       } else {

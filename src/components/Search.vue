@@ -62,9 +62,8 @@ export default {
     "$route.query.search": async function (val) {
       if (val) {
         console.log("Search movies in Search");
-        this.$store.dispatch("movies/searchMovies", { searchText: val });
+        this.$store.commit("filters/resetFilters");
         await this.$store.dispatch("movies/searchMovies", { searchText: val });
-        await this.$store.commit("filters/resetFilters");
         if (this.$route.name !== "movies") {
           this.$router.push({ name: "movies", query: { search: val } });
         }
