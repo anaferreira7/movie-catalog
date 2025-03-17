@@ -52,12 +52,12 @@
         </div>
       </div>
     </div>
-    <h2 v-if="relatedMovies" class="text-xl font-medium px-6 mt-6 py-4">
+    <h2 v-if="relatedMovies?.length" class="text-xl font-medium px-6 mt-6 py-4">
       Related Movies
     </h2>
 
     <div
-      v-if="relatedMovies"
+      v-if="relatedMovies?.length"
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6 pb-6"
     >
       <button
