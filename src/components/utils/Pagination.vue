@@ -1,6 +1,8 @@
 <template>
   <!-- Page Navigation -->
-  <div class="flex items-center flex-wrap space-x-2 mt-4">
+  <div
+    class="flex items-center justify-center flex-wrap space-x-2 mt-4 relative w-full"
+  >
     <button
       @click="changePage(1)"
       :disabled="currentPage === 1"
@@ -46,19 +48,38 @@
     >
       &gt;&gt;
     </button>
+    <div class="ml-4">
+      <select
+        disabled
+        v-model="perPage"
+        @change="emitPerPage"
+        class="hidden sm:block absolute right-0 bottom-0 cursor-not-allowed opacity-40 bg-[#BA64FE] text-white py-2 px-4 rounded-md border border-[#BA64FE] transition duration-200 ease-in-out hover:bg-[#9d47c0]"
+      >
+        <option :value="10">10</option>
+        <option :value="20">20</option>
+        <option :value="30">30</option>
+        <option :value="50">50</option>
+      </select>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "PaginationComp",
+  emits: ["update:modelValue"],
   props: {
     currentPage: Number,
     totalPages: Number,
+    modelValue: {
+      type: Number,
+      default: 10,
+    },
   },
   data() {
     return {
       screenWidth: window.innerWidth,
+      perPage: this.modelValue, // Bind perPage to the modelValue prop
     };
   },
   computed: {
@@ -99,6 +120,9 @@ export default {
       if (page >= 1 && page <= this.totalPages) {
         this.$emit("update:currentPage", page);
       }
+    },
+    emitPerPage() {
+      this.$emit("update:modelValue", this.perPage); // Emit the new value for movies per page
     },
   },
   beforeUnmount() {

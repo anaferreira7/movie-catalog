@@ -100,6 +100,7 @@
         :currentPage="$store.state.movies.currentPage"
         :totalPages="$store.state.movies.totalPages"
         @update:currentPage="updatePage"
+        v-model="moviesPerPage"
       />
     </div>
   </div>
@@ -120,7 +121,8 @@ export default {
   },
   data() {
     return {
-      currentPage: 1, //
+      currentPage: 1,
+      moviesPerPage: 10,
     };
   },
   computed: {
