@@ -2,26 +2,25 @@ export default {
   namespaced: true,
   state: {
     genres: [],
-    releaseYear: null,
+    releaseYear: [],
     rating: null,
   },
   mutations: {
     setFilters(state, filters) {
       state.genres = filters.genres || [];
-      state.releaseYear = filters.releaseYear || null;
+      state.releaseYear = filters.releaseYear || [];
       state.rating = filters.rating || null;
     },
     resetFilters(state) {
       state.genres = [];
-      state.releaseYear = null;
+      state.releaseYear = [];
       state.rating = null;
     },
   },
   actions: {
     async updateFilters({ commit, dispatch }, filters) {
-      console.log("updateFiltersStore", filters);
-      await dispatch("movies/fetchMovies", { filters }, { root: true });
       commit("setFilters", filters);
+      dispatch("movies/fetchMovies", { filters }, { root: true });
     },
 
     resetFilters({ commit }) {

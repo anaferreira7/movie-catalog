@@ -28,8 +28,10 @@ export default {
   },
   actions: {
     async fetchMovies({ commit }, { filters = {}, page = 1 } = {}) {
+      console.log("filters in fetchmovies", filters);
+
       // commit("SET_LOADING", true);
-      getMovies({ ...filters, page })
+      getMovies({ filters, page })
         .then((res) => {
           commit("SET_MOVIES", res.data.results);
           commit("SET_TOTAL_PAGES", res.data.total_pages);
@@ -49,10 +51,12 @@ export default {
         });
     },
 
-    async searchMovies({ commit }, searchText) {
-      searchMovies(searchText)
+    async searchMovies({ commit }, { searchText, page = 1 }) {
+      searchMovies({ searchText, page })
         .then((res) => {
           commit("SET_MOVIES", res.data.results);
+          commit("SET_TOTAL_PAGES", res.data.total_pages);
+          commit("SET_CURRENT_PAGE", res.data.page);
         })
         .catch((err) => {
           console.error("Something went wrong with the search", err);

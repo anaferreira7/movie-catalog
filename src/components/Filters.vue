@@ -132,9 +132,7 @@ export default {
       if (this.filters.genres.length) {
         this.filters.genres = this.filters.genres.map((genre) => genre.id);
       }
-      if (this.filters.releaseYear) {
-        this.filters.releaseYear = this.filters.releaseYear.year;
-      }
+
       console.log("updateFilters", this.filters);
 
       await this.$store.dispatch("filters/updateFilters", this.filters);

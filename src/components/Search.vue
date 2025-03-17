@@ -52,7 +52,7 @@ export default {
 
   data() {
     return {
-      searchText: "",
+      searchText: this.$route.query.search ? this.$route.query.search : "",
       debounceTimeout: null,
       isFiltersOpen: false,
     };
@@ -62,7 +62,9 @@ export default {
     "$route.query.search": async function (val) {
       if (val) {
         console.log("Search movies in Search");
-        await this.$store.dispatch("movies/searchMovies", val);
+        this.$store.dispatch("movies/searchMovies", { searchText: val });
+        await this.$store.dispatch("movies/searchMovies", { searchText: val });
+        await this.$store.commit("filters/resetFilters");
         if (this.$route.name !== "movies") {
           this.$router.push({ name: "movies", query: { search: val } });
         }

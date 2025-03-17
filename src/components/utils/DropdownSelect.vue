@@ -68,11 +68,11 @@
 export default {
   name: "DropdownSelect",
   props: {
-    modelValue: Array, // For v-model binding
-    items: { type: Array, required: true }, // List of dropdown options
-    multiple: { type: Boolean, default: true }, // Allow multiple selections
-    labelKey: { type: String, required: false }, // Key for label display
-    valueKey: { type: String, required: false }, // Key for values
+    modelValue: { required: true },
+    items: { type: Array, required: true },
+    multiple: { type: Boolean, default: true },
+    labelKey: { type: String, required: false },
+    valueKey: { type: String, required: false },
     placeholder: { type: String, default: "Select an option" },
   },
   data() {

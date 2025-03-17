@@ -15,7 +15,7 @@
         <img
           :src="imgsUrl + movie.poster_path"
           alt="movie poster"
-          class="w-64 h-fit rounded-lg mx-auto sm:mx-0 shadow-md shadow-gray-800"
+          class="w-64 h-fit rounded-lg mx-auto sm:mx-0 shadow-md shadow-[#181818]"
         />
 
         <div class="mt-4 sm:mt-0">

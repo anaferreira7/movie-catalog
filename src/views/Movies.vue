@@ -64,23 +64,28 @@
 
       <div class="flex flex-wrap gap-3 text-sm mt-2">
         <span
-          v-if="this.$store.state.filters.genres"
+          v-if="$store.state.filters.genres.length"
           class="px-3 py-1 bg-gray-800 rounded-lg"
         >
-          🎭 Genres: <strong>{{ genreNames.join(", ") }}</strong>
+          🎭 Genres:
+          <strong v-for="genre in $store.state.filters.genres" :key="genre">{{
+            getGenreName(genre)
+          }}</strong>
         </span>
         <span
-          v-if="$store.state.filters.releaseYear"
+          v-if="$store.state.filters.releaseYear.length"
           class="px-3 py-1 bg-gray-800 rounded-lg"
         >
-          📅 Release Year: <strong>{{ filters.releaseYear }}</strong>
+          📅 Release Year:
+          <strong>{{ $store.state.filters.releaseYear[0]?.year }}</strong>
         </span>
+
         <span
           v-if="this.$store.state.filters.rating"
           class="px-3 py-1 bg-gray-800 rounded-lg"
         >
           <span class="text-yellow-400">★</span> Rating:
-          <strong>{{ this.$store.state.filters.rating }}</strong>
+          <strong>{{ $store.state.filters.rating }}</strong>
         </span>
       </div>
     </div>
@@ -92,7 +97,7 @@
     <!-- Pagination -->
     <div class="flex justify-center">
       <Pagination
-        :currentPage="currentPage"
+        :currentPage="$store.state.movies.currentPage"
         :totalPages="$store.state.movies.totalPages"
         @update:currentPage="updatePage"
       />
@@ -115,40 +120,49 @@ export default {
   },
   data() {
     return {
-      currentPage: 1,
+      currentPage: 1, //
     };
   },
   computed: {
     ...mapGetters("movies", ["getGenreName"]),
     hasFilters() {
       return (
-        this.$store.state.filters.genres.length > 0 ||
-        this.$store.state.filters.releaseYear !== null ||
+        this.$store.state.filters.genres.length ||
+        this.$store.state.filters.releaseYear.length ||
         this.$store.state.filters.rating !== null
-      );
-    },
-    genreNames() {
-      return this.$store.state.movies.genres.map((genreId) =>
-        this.getGenreName(genreId)
       );
     },
   },
   async created() {
     this.fetchMovies({ page: this.currentPage });
-    this.$store.dispatch("movies/fetchGenres");
   },
   methods: {
     fetchMovies(params) {
       if (this.hasFilters) {
         params.filters = this.$store.state.filters;
       }
-      this.$store.dispatch("movies/fetchMovies", {
-        filters: this.$store.state.filters,
-      });
+      if (!this.$route.query.search) {
+        this.$store.dispatch("movies/fetchMovies", {
+          filters: this.$store.state.filters,
+          page: this.currentPage,
+        });
+      } else {
+        this.$store.dispatch("movies/searchMovies", {
+          searchText: this.$route.query.search,
+          page: this.currentPage,
+        });
+      }
     },
     updatePage(newPage) {
       this.currentPage = newPage;
-      this.fetchMovies({ page: newPage, searchText: this.$route.query.search });
+      if (this.$route.query.search) {
+        this.$store.dispatch("movies/searchMovies", {
+          query: this.$route.query.search,
+          page: newPage,
+        });
+      } else {
+        this.fetchMovies({ page: newPage, filters: this.$store.state.filters });
+      }
     },
     resetFilters() {
       this.$store.dispatch("filters/resetFilters");
