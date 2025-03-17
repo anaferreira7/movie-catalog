@@ -69,7 +69,7 @@
         />
         <AddToFav :movie="movie" class="absolute z-[1] top-0 right-0" />
         <div
-          class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end"
+          class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end items-start"
         >
           <h3 class="font-medium text-lg">{{ movie.title }}</h3>
           <p class="text-gray-600 text-sm">
