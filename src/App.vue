@@ -10,7 +10,9 @@ export default {
   components: {
     TopBar,
   },
-  created() {},
+  created() {
+    this.$store.dispatch("movies/fetchGenres");
+  },
 };
 </script>
 
