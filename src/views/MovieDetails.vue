@@ -52,16 +52,16 @@
         </div>
       </div>
     </div>
-    <h2 v-if="relatedMovies?.length" class="text-xl font-medium px-6 mt-6 py-4">
+    <h2 v-if="relatedMovies" class="text-xl font-medium px-6 mt-6 py-4">
       Related Movies
     </h2>
 
     <div
-      v-if="relatedMovies?.length"
+      v-if="relatedMovies"
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6 pb-6"
     >
       <button
-        v-for="movie in relatedMovies.splice(0, 10)"
+        v-for="movie in relatedMovies.splice(0, 5)"
         :key="movie.id"
         @click="goToRelated(movie.id)"
         class="rounded-xl relative overflow-hidden shadow-md shadow-black"
@@ -112,15 +112,15 @@ export default {
     },
   },
   async created() {
-    this.getMovieData(this.id);
+    this.getMovieData();
   },
   methods: {
     goToRelated(id) {
-      this.getMovieData(id);
       this.$router.replace({ params: { id } });
+      this.getMovieData(id);
       window.scrollTo({ top: 0, behavior: "smooth" });
     },
-    async getMovieData(id) {
+    async getMovieData(id = this.id) {
       try {
         const [movieData, relatedMoviesData] = await Promise.all([
           getMovieDetails(id),
