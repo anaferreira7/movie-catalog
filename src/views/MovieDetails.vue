@@ -1,6 +1,6 @@
 <template>
   <div v-if="movie">
-    <div class="relative min-h-[400px] h-[80vh] overflow-hidden py-8 -mt-4">
+    <div class="relative min-h-[400px] h-[80vh] overflow-hidden py-8">
       <img
         class="absolute blur-md w-full h-full object-cover object-center"
         :src="imgsUrl + movie.backdrop_path"
@@ -49,17 +49,38 @@
     <h2 v-if="relatedMovies" class="text-xl font-medium px-6 mt-6 py-4">
       Related Movies
     </h2>
-    <div v-if="relatedMovies" class="grid grid-cols-6 gap-3">
-      <div v-for="movie in relatedMovies" :key="movie.id">
+
+    <div
+      v-if="relatedMovies"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6"
+    >
+      <!-- TODO - Add this to Movie Card Component -->
+      <router-link
+        v-for="movie in relatedMovies"
+        :key="movie.id"
+        :to="{ name: 'movieDetails', params: { id: movie.id } }"
+        class="rounded-xl relative overflow-hidden shadow-md shadow-black"
+      >
         <img
-          :src="imgsUrl + movie.poster_path"
-          alt="movie poster"
-          class="w-42 rounded"
+          :src="`https://image.tmdb.org/t/p/w500${movie.poster_path}`"
+          alt="Movie poster"
+          class="w-full h-auto object-cover rounded-md mb-4"
         />
-        <h3>
-          {{ movie.title }}
-        </h3>
-      </div>
+        <AddToFav :movie="movie" class="absolute z-[1] top-0 right-0" />
+        <div
+          class="[background-image:linear-gradient(to_top,black_15%,transparent_100%)] absolute bottom-0 left-0 w-full h-full px-4 pb-4 flex flex-col justify-end"
+        >
+          <h3 class="font-medium text-lg">{{ movie.title }}</h3>
+          <p class="text-gray-600 text-sm">
+            {{ $getYearFromStringDate(movie.release_date) }}
+          </p>
+          <p class="text-xs text-gray-600 flex flex-wrap gap-x-1">
+            <span v-for="genreId in movie.genre_ids.slice(0, 3)" :key="genreId">
+              {{ getGenreName(genreId) }}
+            </span>
+          </p>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -79,6 +100,11 @@ export default {
       imgsUrl:
         process.env.VUE_APP_IMAGES_URL || "https://image.tmdb.org/t/p/w500", //TODO env not working
     };
+  },
+  computed: {
+    getGenreName() {
+      return this.$store.getters["movies/getGenreName"];
+    },
   },
   async created() {
     try {
