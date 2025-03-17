@@ -1,22 +1,24 @@
 <template>
   <div v-if="movie">
-    <div class="relative min-h-[400px] h-[80vh] overflow-hidden py-8">
+    <div class="relative min-h-[80vh] overflow-hidden py-8">
       <img
-        class="absolute blur-md w-full h-full object-cover object-center"
+        class="hidden sm:absolute blur-md w-full h-full object-cover object-center"
         :src="imgsUrl + movie.backdrop_path"
         alt=""
       />
-      <div class="overlay absolute z-[0] inset-0 bg-[#1B1820] opacity-80"></div>
       <div
-        class="absolute z-[1] inset-0 w-full pt-16 px-10 max-w-[1200px] mx-auto flex gap-x-14"
+        class="overlay sm:absolute z-[0] inset-0 bg-[#1B1820] opacity-80"
+      ></div>
+      <div
+        class="sm:absolute z-[1] inset-0 w-full sm:pt-16 px-10 max-w-[1200px] mx-auto flex flex-col sm:flex-row gap-x-14"
       >
         <img
           :src="imgsUrl + movie.poster_path"
           alt="movie poster"
-          class="w-64 h-fit rounded-lg"
+          class="w-64 h-fit rounded-lg mx-auto sm:mx-0"
         />
 
-        <div>
+        <div class="mt-4 sm:mt-0">
           <div class="flex justify-between">
             <h1 class="text-3xl">{{ movie.title }}</h1>
             <AddToFav :movie="movie" />
@@ -52,13 +54,12 @@
 
     <div
       v-if="relatedMovies"
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 px-6 pb-6"
     >
-      <!-- TODO - Add this to Movie Card Component -->
-      <router-link
-        v-for="movie in relatedMovies"
+      <button
+        v-for="movie in relatedMovies.splice(0, 10)"
         :key="movie.id"
-        :to="{ name: 'movieDetails', params: { id: movie.id } }"
+        @click="goToRelated(movie.id)"
         class="rounded-xl relative overflow-hidden shadow-md shadow-black"
       >
         <img
@@ -80,7 +81,7 @@
             </span>
           </p>
         </div>
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
@@ -107,17 +108,27 @@ export default {
     },
   },
   async created() {
-    try {
-      const [movieData, relatedMoviesData] = await Promise.all([
-        getMovieDetails(this.id),
-        getRelatedMovies(this.id),
-      ]);
+    this.getMovieData(this.id);
+  },
+  methods: {
+    goToRelated(id) {
+      this.getMovieData(id);
+      this.$router.replace({ params: { id } });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    },
+    async getMovieData(id) {
+      try {
+        const [movieData, relatedMoviesData] = await Promise.all([
+          getMovieDetails(id),
+          getRelatedMovies(id),
+        ]);
 
-      this.movie = movieData.data;
-      this.relatedMovies = relatedMoviesData.data.results;
-    } catch (err) {
-      console.error("Error fetching movie data or related movies:", err);
-    }
+        this.movie = movieData.data;
+        this.relatedMovies = relatedMoviesData.data.results;
+      } catch (err) {
+        console.error("Error fetching movie data or related movies:", err);
+      }
+    },
   },
 };
 </script>
