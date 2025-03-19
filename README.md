@@ -13,7 +13,7 @@ The Movie Catalog Web Application allows users to search, browse, and filter mov
 - **Routing & Lazy Loading**: Dynamic routing for movie detail pages with lazy-loaded routes for better performance.
 - **Responsive Design**: Fully responsive design for mobile, tablet, and desktop devices using Tailwind CSS.
 - **Movie Details**: Displays detailed information about a selected movie including title, poster, description, release date and related movies.
-- 
+  
 ## Installation & Setup
 
 ### Prerequisites
@@ -61,7 +61,7 @@ VUE_APP_API_SESSION_ID={Your TMDb Session ID}
 VUE_APP_IMAGES_PATH=https://image.tmdb.org/t/p/w500
 ```
 
-Replace {Your TMDb API Key}, {Your TMDb Access Token} and {Your TMDb Session ID} with your actual credentials from TMDb. You can sign up and get these credentials on their website: [TMDb](https://www.themoviedb.org/).
+Replace `{Your TMDb API Key}`, `{Your TMDb Access Token}` and `{Your TMDb Session ID}` with your actual credentials from TMDb. You can sign up and get these credentials on their website: [TMDb](https://www.themoviedb.org/).
 
 ### 4. Run the application locally
 
